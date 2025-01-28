@@ -216,7 +216,6 @@ const eventListeners = () => {
     // push that object to the data array 
     data.push(newVideo);   
     // rerender cards using the cardsOnDom function and pass it the updated data array
-    // cardsOnDom(data);
     
     // Close modal and reset form
     formModal.hide();
