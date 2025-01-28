@@ -1,39 +1,39 @@
 // *********  DATA ********** //
 const data = [
   {
-    videoId: 'cNjIUSDnb9k',
-    title: 'Callbacks',
-    category: 'javascript',
+    videoId: 'gcG9Cc1_iV4',
+    title: 'Helena (MCR Cover) - Archeons | Sims 4 Machinima',
+    category: 'music',
     favorite: true,
   },
   {
-    videoId: 'f02mOEt11OQ',
-    title: 'Chill Beats',
-    category: 'music',
+    videoId: 'rQv5eFyvRig',
+    title: 'GETTING BETTER and also WORSE | Lethal Company - Part 4',
+    category: 'letsPlay',
     favorite: false,
   },
   {
     videoId: 'PlxWf493en4',
     title: 'How to Make a Super Simple Website',
-    category: 'html',
+    category: 'coding',
     favorite: false,
   },
   {
-    videoId: '1PnVor36_40',
-    title: 'Learn CSS in 20 Minutes',
-    category: 'css',
+    videoId: 'GC2NhUchz6c',
+    title: 'What if we had our own MONOPOLY board? | GRUMPOPOLY',
+    category: 'letsPlay',
     favorite: true,
   },
   {
     videoId: '1Rs2ND1ryYc',
     title: 'Zero to Hero',
-    category: 'css',
+    category: 'coding',
     favorite: false,
   },
   {
-    videoId: 'jjydMpW47wk',
-    title: 'Inspo on JS',
-    category: 'javascript',
+    videoId: 'IWBbsv0GunU',
+    title: 'Rain City Drive - "Witch Hunt" (Lyric Video)',
+    category: 'music',
     favorite: true,
   },
 ];
@@ -51,6 +51,7 @@ const renderToDom = (divId, textToRender) => {
 const videoBtnModal = () => {
   const domString = `
     <!-- Button trigger modal -->
+    <img src="assets/images/hufftube.png" alt="youtube logo" class="logo">
     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#add-video">
     Add Video
     </button>
@@ -121,9 +122,8 @@ const filterButtons = () => {
   const domString = `
   <div class="d-flex flex-wrap justify-content-between my-3">
     <button class="btn btn-secondary btn-lg buttonRow" id="music">Music</button>
-    <button class="btn btn-secondary btn-lg buttonRow" id="javascript">Javascript</button>
-    <button class="btn btn-secondary btn-lg buttonRow" id="css">CSS</button>
-    <button class="btn btn-secondary btn-lg buttonRow" id="html">HTML</button>
+    <button class="btn btn-secondary btn-lg buttonRow" id="coding">Coding</button>
+    <button class="btn btn-secondary btn-lg buttonRow" id="letsPlay">Let's Plays</button>
     <button class="btn btn-secondary btn-lg buttonRow" id="favorite">Favorites</button>
     <button class="btn btn-secondary btn-lg buttonRow" id="clear">Clear Filter</button>
   </div>
@@ -136,13 +136,13 @@ const cardsOnDom = (array) => {
   let domString = '';
   for (const item of array) {
     domString += `
-    <div class="mb-3 d-flex align-items-center" style="background: white; padding: 20px; border: 1px solid black; border-radius: 10px;">
+    <div class="mb-3 d-flex align-items-center" style="background: #FFFFFF14; padding: 20px; border: 1px solid black; border-radius: 10px;">
     <div class="flex-shrink-0">
       <img src="./assets/images/${item.category}.png" style="width: 120px; height: 120px; border-radius: 20px;" alt="${item.category} icon">
     </div>
     <div class="flex-grow-1 ms-3">
-      <h2 style="font-size: 24px; font-weight: bold; padding: 0px; margin: 0px">${item.favorite ? '⭐' : ''} ${item.title}</h2>
-      <p><b>Category:</b> ${item.category.toUpperCase()}</p>
+      <h2 style="color: white; font-size: 24px; font-weight: bold; padding: 0px; margin: 0px">${item.favorite ? '⭐' : ''} ${item.title}</h2>
+      <p style="color: #999; margin-top: 10px;"><b>Category:</b> ${item.category.toUpperCase()}</p>
       <button class="btn btn-dark" id="watch--${item.videoId}">Watch Video</button>
     </div>
     <div>
@@ -162,14 +162,14 @@ const eventListeners = () => {
   
   // FILTER BUTTON ROW
   document.querySelector('#filterContainer').addEventListener('click', (e) => {
-    console.log("You clicked a filter button", e.target.id);
+    // console.log("You clicked a filter button", e.target.id);
     // filter on category (either use .filter or a loop)
     if (e.target.id === 'clear'){
       cardsOnDom(data);
-    } else if (e.target.id === 'favorite'){
+    } else if (e.target.id === 'favorite') {
       cardsOnDom(data.filter((video) => video.favorite));
-    } else if (e.target.id){
-      cardsOnDom(data.filter((video) => video.category));
+    } else if (e.target.id) {
+      cardsOnDom(data.filter((video) => video.category === e.target.id));
     }
     // rerender DOM with new array (use the cardsOnDom function)
   });
@@ -186,7 +186,7 @@ const eventListeners = () => {
 
       // if watch: grab the ID and rerender the videoPlayer with that ID as an argument
       if (e.target.id.includes('watch')) {
-        console.log("Pressed Watch Button")
+        // console.log("Pressed Watch Button")
         videoPlayer(data[index].videoId);       
         // scroll to top of page
         document.location = '#';
@@ -195,9 +195,10 @@ const eventListeners = () => {
       // if delete: find the index of item in array and splice
       // NOTE: if 2 videos have the same videoId, this will delete the first one in the array
       if (e.target.id.includes('delete')) {
-        console.log("Delete Button Pressed")
+        // console.log("Delete Button Pressed")
         // rerender DOM with updated data array (use the cardsOnDom function)
         data.splice(index, 1);
+        cardsOnDom(data);
       }
     }
   });
@@ -216,7 +217,7 @@ const eventListeners = () => {
     // push that object to the data array 
     data.push(newVideo);   
     // rerender cards using the cardsOnDom function and pass it the updated data array
-    
+    cardsOnDom(data);
     // Close modal and reset form
     formModal.hide();
     form.reset();
@@ -226,10 +227,10 @@ const eventListeners = () => {
 // *********  FUNCTION TO START APPLICATION  *********  //
 const startApp = () => {
   videoBtnModal();
-  videoPlayer('cNjIUSDnb9k');
+  videoPlayer('gcG9Cc1_iV4');
   filterButtons();
   cardsOnDom(data);
-  // eventListeners(); // always last
+  eventListeners(); // always last
 };
 
 startApp();
